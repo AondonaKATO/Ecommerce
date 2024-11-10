@@ -17,6 +17,21 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Agricultural Produce</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobles' Agro Hub</title>
+         <meta property="og:title" content="Nobles' Agro Hub" />
+   <meta property="og:description" content="Explore Agricultural Produce, your one-stop shop for fresh, organic fruits, vegetables, and farm-grown goods. From crisp apples to nutritious spinach, we offer a wide range of high-quality produce directly from local farms. Shop now and enjoy healthy, sustainable options delivered straight to your door!" />
+    <meta property="og:image" content="https://aondonakato.github.io/Ecommerce/favicon.svg" />
+    <meta property="og:url" content="https://aondonakato.github.io/Ecommerce/" />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Agro Hub" />
+<link rel="manifest" href="site.webmanifest" />
     <style>
         .card-img-top {
             height: 200px;
