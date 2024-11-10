@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card-img-top {
+            height: 100px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Agricultural Produce</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="product.php">Products</a></li>
+            <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="cart.html">Cart <span class="badge badge-pill badge-primary" id="cart-count">0</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="my-4">Shopping Cart</h1>
+    <div id="cart-items"></div>
+    <div id="empty-cart" class="alert alert-info" style="display: none;">
+        Your cart is currently empty. <a href="product.php" class="btn btn-primary">Continue Shopping</a>
+    </div>
+    <div id="cart-total" style="display: none;">
+        <a href="product.php" class="btn btn-primary">Continue Shopping</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Fetch cart items when the page loads
+    $.ajax({
+        url: 'cart.php',  // The PHP file that handles the cart logic
+        type: 'GET',
+        success: function(response) {
+            var cartData = JSON.parse(response);  // Parse the JSON response
+            var cartCount = cartData.count;
+            var cartItems = cartData.items;
+            var cartTotal = cartData.total;
+
+            // Update cart count
+            $('#cart-count').text(cartCount);
+
+            // If the cart is not empty
+            if (cartCount > 0) {
+                var cartHtml = '<table class="table"><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th><th>Action</th></tr></thead><tbody>';
+                cartItems.forEach(function(item) {
+                    cartHtml += `<tr>
+                        <td>${item.name}</td>
+                        <td>$${item.price}</td>
+                        <td>1</td>
+                        <td>$${item.price}</td>
+                        <td><a href="remove_from_cart.php?id=${item.id}" class="btn btn-danger">Remove</a></td>
+                    </tr>`;
+                });
+                cartHtml += `<tr><td colspan="3"><strong>Total</strong></td><td><strong>$${cartTotal}</strong></td><td></td></tr></tbody></table>`;
+                $('#cart-items').html(cartHtml);
+                $('#cart-total').show();
+            } else {
+                $('#empty-cart').show();
+            }
+        },
+        error: function() {
+            alert("Error loading cart items");
+        }
+    });
+});
+</script>
+</body>
+</html>
