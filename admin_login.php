@@ -1,4 +1,4 @@
-<?php
+/*?php
 include 'db.php';
 session_start();
 
@@ -22,9 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Invalid credentials!";
     }
 }
+?> */
+
+<?php
+include 'db.php';
+session_start();
+
+// Handle POST request for login
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Check credentials against the database
+    $sql = "SELECT * FROM admins WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $admin = $result->fetch_assoc();
+
+    // Verify password and login
+    if ($admin && password_verify($password, $admin['password'])) {
+        $_SESSION['admin_id'] = $admin['id'];
+        $_SESSION['admin_username'] = $admin['username'];
+        header('Location: admin_dashboard.php');  // Redirect to admin dashboard
+        exit();
+    } else {
+        // Invalid login credentials
+        $_SESSION['error_message'] = "Invalid credentials!";
+    }
+}
 ?>
 
-<!DOCTYPE html>
+
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,4 +87,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
+</html> -->
