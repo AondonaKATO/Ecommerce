@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">E-Commerce</a>
+</nav>
+
+<div class="container my-4">
+    <h1>Checkout</h1>
+    <form method="post" action="checkout.php">
+        <h3>Order Summary</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items"></tbody>
+            <tr>
+                <td colspan="3" class="text-right"><strong>Total</strong></td>
+                <td id="total"></td>
+            </tr>
+        </table>
+        <input type="hidden" name="total" id="total-input">
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Fetch cart items dynamically using AJAX
+    $.ajax({
+        url: 'cart_data.php',  // A PHP file that returns cart data in JSON format
+        type: 'GET',
+        success: function(response) {
+            let cartData = JSON.parse(response);
+            let cartItemsHtml = '';
+            let total = 0;
+
+            cartData.items.forEach(item => {
+                let itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartItemsHtml += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${item.price}</td>
+                        <td>$${itemTotal}</td>
+                    </tr>
+                `;
+            });
+
+            $('#cart-items').html(cartItemsHtml);
+            $('#total').text('$' + total.toFixed(2));
+            $('#total-input').val(total.toFixed(2));
+        },
+        error: function() {
+            alert('Error loading cart items');
+        }
+    });
+});
+</script>
+</body>
+</html>
